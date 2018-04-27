@@ -19,13 +19,13 @@ public class RemoveDups {
 
     values.add(head.data);
     Node temp = head;
-    while (temp.next != null) {
+    while (temp != null && temp.next != null) {
       if (values.contains(temp.next.data)) {
         temp.next = temp.next.next;
       } else {
         values.add(temp.next.data);
+        temp = temp.next;
       }
-      temp = temp.next;
     }
     return head;
   }
@@ -37,14 +37,14 @@ public class RemoveDups {
     }
 
     Node slow = head;
-    while (slow.next != null) {
+    while (slow != null && slow.next != null) {
       Node fast = slow;
       do {
         if (fast.next.data == slow.data) {
           fast.next = fast.next.next;
         }
         fast = fast.next;
-      } while (fast.next != null);
+      } while (fast != null && fast.next != null);
       slow = slow.next;
     }
 
@@ -52,55 +52,16 @@ public class RemoveDups {
   }
 
   public static void main(String[] args) {
-    Node head = createLinkedList();
+    int[] values = {1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 7};
+    Node head = Node.createList(values);
     System.out.println(head.getNodes());
 
     Node dedupe1 = removeDups_buffer(head);
     System.out.println(dedupe1.getNodes());
 
-    head = createLinkedList();
+    head = Node.createList(values);
     Node dedupe2 = removeDups_noBuffer(head);
     System.out.println(dedupe2.getNodes());
   }
-
-  private static Node createLinkedList() {
-    int[] data = {1, 2, 2, 3, 4, 4, 5, 6, 6, 7};
-    Node head = new Node(data[0]);
-    for (int i = 1; i < data.length; i++) {
-      head.append(data[i]);
-    }
-    return head;
-  }
 }
 
-class Node {
-  Node next = null;
-  final int data;
-
-  Node(int data) {
-    this.data = data;
-  }
-
-  void append(int data) {
-    Node end = new Node(data);
-    Node n = this;
-    while (n.next != null) {
-      n = n.next;
-    }
-    n.next = end;
-  }
-
-  String getNodes() {
-    StringBuffer buffer = new StringBuffer("[");
-
-    buffer.append(this.data);
-    Node n = this;
-    while(n.next != null) {
-      buffer.append("," + n.next.data);
-      n = n.next;
-    }
-
-    buffer.append("]");
-    return buffer.toString();
-  }
-}
