@@ -2,7 +2,7 @@ package chapter2;
 
 class Node {
   Node next = null;
-  final int data;
+  int data;
 
   Node(int data) {
     this.data = data;
